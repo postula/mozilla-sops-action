@@ -21,13 +21,22 @@ function getExecutableExtension(): string {
     return '';
 }
 
+function getArchExtension(): string {
+    switch (os.arch()) {
+        case 'arm64':
+            return 'arm64';
+        default:
+            return 'amd64';
+    }
+}
+
 function getSopsDownloadURL(version: string): string {
     switch (os.type()) {
         case 'Linux':
-            return util.format('https://github.com/mozilla/sops/releases/download/%s/sops-%s.linux.amd64', version, version);
+            return util.format('https://github.com/mozilla/sops/releases/download/%s/sops-%s.linux.%s', version, version, getArchExtension());
 
         case 'Darwin':
-            return util.format('https://github.com/mozilla/sops/releases/download/%s/sops-%s.darwin.amd64', version, version);
+            return util.format('https://github.com/mozilla/sops/releases/download/%s/sops-%s.darwin.%s', version, version, getArchExtension());
 
         case 'Windows_NT':
         default:
